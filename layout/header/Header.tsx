@@ -15,44 +15,47 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import Link from 'next/link';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const drawerWidth = 240;
-// const navItems = ['Home', 'About', 'Image Library', 'Astronomy Picture'];
 const navItems = [
   {
-  component: 'Home',
-  path: '/'
-},
-{
-  component: 'About',
-  path: '/about'
-},
-{
-  component: 'Image Library',
-  path: '/imggalery'
-},
+    component: 'Home',
+    path: '/'
+  },
+  {
+    component: 'About',
+    path: '/about'
+  },
+  {
+    component: 'Image Library',
+    path: '/imggalery'
+  },
 ];
 
 interface Props {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window?: () => Window;
-  }
+  window?: () => Window;
+}
 
 export default function Header(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [darkMode, setDarkMode] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const handleThemeChange = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        <RocketLaunchIcon/>
+        <RocketLaunchIcon />
         NASA Explorer
       </Typography>
       <Divider />
@@ -70,61 +73,80 @@ export default function Header(props: Props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar color='inherit' component="nav" sx={{height: "auto"}}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar color='inherit' component="nav" sx={{ height: "auto" }}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <RocketLaunchIcon sx={{ mx: 1, color: "#6C5AC9" }} />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color: "#6C5AC9", fontWeight: "bold" }}
+            >
+              NASA Explorer
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block', }, }}>
+              {navItems.map((item, key) => (
+                <Button key={key} component={Link} href={item?.path} sx={{
+                  color: '#6C5AC9', fontWeight: 'bold', '&:hover': {
+                    backgroundColor: '#ffffff',
+                    boxShadow: 'none',
+                    color: '#4535a5'
+                  },
+                }}>
+                  {item?.component}
+                </Button>
+              ))}
+            </Box>
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="toggle theme"
+              onClick={handleThemeChange}
+              sx={{ ml: 'auto' }}
+            >
+              {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <nav>
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, 
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <RocketLaunchIcon sx={{mx: 1, color: "#6C5AC9"}}/>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color: "#6C5AC9", fontWeight: "bold" }}
-          >
-            NASA Explorer
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block', },  }}>
-            {navItems.map((item, key) => (
-              <Button key={key} component={Link} href={item?.path} sx={{ color: '#6C5AC9', fontWeight: 'bold', '&:hover': {
-                backgroundColor: '#ffffff',
-                boxShadow: 'none',
-                color: '#4535a5'
-              }, }}>
-                {item?.component}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
+            {drawer}
+          </Drawer>
+        </nav>
+        <Box component="main" sx={{ p: 3 }}>
+          <Toolbar />
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
