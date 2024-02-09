@@ -41,7 +41,7 @@ const Index = () => {
                     {isFetching || !data ? (
                         [...Array(12)].map((_, key) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={key}>
-                                <Skeleton variant="rectangular" width="100%" height={400} />
+                                <Skeleton sx={{backgroundColor: 'primary'}} variant="rectangular" width="100%" height={400} />
                             </Grid>
                         ))
                     ) : (

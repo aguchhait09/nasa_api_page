@@ -46,11 +46,14 @@ export default function Header(props: Props) {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+    
   };
 
-  const handleThemeChange = () => {
+  const handleThemeChange =  () => {
     setDarkMode((prevMode) => !prevMode);
-  };
+    console.log('theme', darkMode);
+    localStorage.setItem('themes', JSON.stringify(darkMode)) 
+  }
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -73,9 +76,15 @@ export default function Header(props: Props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const [modee, setMode] = React.useState(false)
+ React.useEffect(()=>{
+  setMode(JSON.parse(localStorage.getItem('themes')))
+ },[darkMode])
+ console.log('mode', modee);
+ 
   const theme = createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light',
+      mode: modee ? 'dark' : 'light',
     },
   });
 
@@ -122,7 +131,7 @@ export default function Header(props: Props) {
               onClick={handleThemeChange}
               sx={{ ml: 'auto' }}
             >
-              {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+              {!modee ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Toolbar>
         </AppBar>
