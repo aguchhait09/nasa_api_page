@@ -10,7 +10,11 @@ import { Box, Container, Grid, Typography, Skeleton } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home({ darkMode }) {
+interface IndexProps {
+  darkMode: boolean; 
+}
+
+export default function Home({ darkMode }: IndexProps) {
   const { isPending, data } = useQuery({
     queryKey: ['apodData'],
     queryFn: apodDetails
