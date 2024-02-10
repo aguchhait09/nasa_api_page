@@ -10,3 +10,4 @@ export const imageGalery = async ()=> {
     
     return res?.data?.photos
 }
+

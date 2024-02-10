@@ -3,8 +3,8 @@ import Header from "../header/Header"
 interface WrapperProps{
     children: React.ReactNode
 }
-const Wrapper = (props: WrapperProps) => {
-    const {children} = props
+const Wrapper = ({children, darkMode}: WrapperProps) => {
+    
   return (
     <>
     <Header/>
