@@ -77,10 +77,16 @@
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const [modee, setMode] = React.useState(false)
-  React.useEffect(()=>{
-    setMode(JSON.parse(localStorage.getItem('themes')))
-  },[darkMode])
-  console.log('mode', modee);
+  // React.useEffect(()=>{
+  //   setMode(JSON.parse(localStorage.getItem('themes')))
+  // },[darkMode])
+  // console.log('mode', modee);
+
+  React.useEffect(() => {
+  const storedTheme = localStorage.getItem('themes');
+  const parsedTheme = storedTheme ? JSON.parse(storedTheme) : false;
+  setMode(parsedTheme);
+}, [darkMode]);
   
     const theme = createTheme({
       palette: {

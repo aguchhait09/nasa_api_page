@@ -6,12 +6,18 @@ import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { theme } from '@/mui_theme/theme';
 
+interface IndexProps {
+    darkMode: boolean; 
+}
 
-const Index = ({ darkMode }) => {
+const Index = ({ darkMode }: IndexProps) => {
     const { isFetching, data } = useQuery({
         queryKey: ['img'],
         queryFn: imageGalery,
     });
+
+    // console.log('log', darkMode);
+    
 
     // const {
     //     fetchNextPage,
